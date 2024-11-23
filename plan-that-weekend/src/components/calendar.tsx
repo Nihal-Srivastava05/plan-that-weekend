@@ -5,14 +5,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const HighlightedDateCalendar = ({ longweekends }) => {
-  const longWeekends = [];
-  longweekends.forEach((e) => {
+  const longWeekends: { start: dayjs.Dayjs; end: dayjs.Dayjs }[] = [];
+  longweekends.forEach((e: string | any[]) => {
     if (e.length > 2) {
       longWeekends.push({ start: dayjs(e[0]), end: dayjs(e[e.length - 1]) });
     }
   });
 
-  // Highlight logic using custom day slot props
   const getDayStyles = (day) => {
     const range = longWeekends.find(({ start, end }) =>
       day.isBetween(start, end, "day", "[]")

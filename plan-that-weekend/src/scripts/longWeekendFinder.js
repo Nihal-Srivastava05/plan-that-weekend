@@ -1,13 +1,10 @@
 import {
   format,
   addDays,
-  startOfMonth,
-  endOfMonth,
   eachDayOfInterval,
   startOfYear,
   endOfYear,
   getDay,
-  isSameDay,
 } from "date-fns";
 
 /**
@@ -57,16 +54,3 @@ function findLongWeekends(holidayList, year) {
 }
 
 export default findLongWeekends;
-
-// Example usage:
-// const userHolidays = [
-//   "2024-01-12", // Friday
-//   "2024-01-13", // Saturday
-//   "2024-01-15", // Monday
-//   "2024-03-29", // Friday
-//   "2024-03-31", // Sunday
-// ];
-// const year = 2024;
-
-// const longWeekends = findLongWeekends(userHolidays, year);
-// console.log("Long Weekends:", longWeekends);
