@@ -1,26 +1,36 @@
 import React, { useState } from "react";
 import { DateCalendar } from "@mui/x-date-pickers";
 import { Box } from "@mui/material";
+import dayjs from "dayjs";
 import { isWithinInterval, isSameDay } from "date-fns";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-const HighlightedDateCalendar = () => {
+const HighlightedDateCalendar = ({ longweekends }) => {
+  let longWeekends = [];
+  longweekends.forEach((e) => {
+    if (e.length > 2) {
+      longWeekends.push({ start: dayjs(e[0]), end: dayjs(e[e.length - 1]) });
+    }
+  });
+  console.log("login", longWeekends);
   // Define a date range
-  const startDate = new Date(2024, 1, 5); // Jan 5, 2024
-  const endDate = new Date(2024, 1, 15); // Jan 15, 2024
+  // const longWeekends = [
+  //   { start: dayjs("2024-01-12"), end: dayjs("2024-01-14") }, // Jan 12-14, 2024
+  //   { start: dayjs("2024-02-16"), end: dayjs("2024-02-18") }, // Feb 16-18, 2024
+  //   { start: dayjs("2024-03-29"), end: dayjs("2024-03-31") }, // Mar 29-31, 2024
+  // ];
 
   // Highlight logic using custom day slot props
-  const getDayStyles = (date) => {
-    const isInRange = isWithinInterval(date, {
-      start: startDate,
-      end: endDate,
-    });
-    const isStart = isSameDay(date, startDate);
-    const isEnd = isSameDay(date, endDate);
+  const getDayStyles = (day) => {
+    const range = longWeekends.find(({ start, end }) =>
+      day.isBetween(start, end, "day", "[]")
+    );
 
-    if (isInRange) {
-      console.log("gone in");
+    if (range) {
+      const isStart = day.isSame(range.start, "day");
+      const isEnd = day.isSame(range.end, "day");
+
       return {
         backgroundColor: "#fdd835", // Highlighted background
         color: "black",
