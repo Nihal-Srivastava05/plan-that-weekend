@@ -14,6 +14,7 @@ const StaticCalendar = ({ longweekends, year = 2024, month = 1 }) => {
     start: new Date(start),
     end: new Date(end),
   }));
+
   // Get all days of the month
   const firstDayOfMonth = startOfMonth(new Date(year, month - 1));
   const lastDayOfMonth = endOfMonth(firstDayOfMonth);
