@@ -2,11 +2,11 @@ import { useState } from "react";
 import Papa from "papaparse";
 import { FileUploader } from "react-drag-drop-files";
 
-export const Home = () => {
+export const Home = ({ setData }) => {
   const fileTypes: string[] = ["CSV"];
 
   const [file, setFile] = useState<File | null>(null);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
   const handleChange = (file: File): void => {
     setFile(file);
@@ -20,7 +20,6 @@ export const Home = () => {
       if (!event.target?.result) return;
       if (event.target && typeof event.target.result === "string") {
         const result = event.target.result;
-        console.log("login target", result);
 
         const csv = Papa.parse(result, {
           header: true,
@@ -32,7 +31,9 @@ export const Home = () => {
           alert("No data found in the CSV file");
           return;
         }
-        setData(parsedData);
+
+        var cleanedDate = parsedData.map((row) => row["Date"].trim());
+        setData(cleanedDate);
       }
       // const result = event.target.result;
       // const csv = Papa.parse(result, {

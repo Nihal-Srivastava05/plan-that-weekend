@@ -1,11 +1,16 @@
-import './App.css'
-import { Home } from './pages/Home'
+import "./App.css";
+import { useState } from "react";
+import { Home } from "./pages/Home";
+import { LongWeekends } from "./pages/LongWeekends";
 
 function App() {
-
+  const [data, setData] = useState([]);
   return (
-    <Home></Home>
-  )
+    <>
+      <Home setData={setData}></Home>
+      <LongWeekends data={data}></LongWeekends>
+    </>
+  );
 }
 
-export default App
+export default App;
