@@ -5,17 +5,11 @@ function findLongWeekends(holidays) {
    * @returns {Array<[string, string]>} - List of long weekends as tuples (start_date, end_date).
    */
 
-  // Convert holiday strings to Date objects and sort them
   const holidayDates = holidays
     .map((date) => new Date(date))
     .sort((a, b) => a - b);
 
   const longWeekends = [];
-
-  // Helper function to check if a given date exists in the holiday list
-  const isHoliday = (date) =>
-    holidayDates.some((h) => h.getTime() === date.getTime());
-
   for (let i = 0; i < holidayDates.length; i++) {
     const holiday = holidayDates[i];
     const dayOfWeek = holiday.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
@@ -48,21 +42,10 @@ function findLongWeekends(holidays) {
 
     // Check if the calculated range is valid and all dates are holidays
     if (weekendStart && weekendEnd) {
-      const allDaysAreHolidays = [];
-      for (
-        let date = new Date(weekendStart);
-        date <= weekendEnd;
-        date.setDate(date.getDate() + 1)
-      ) {
-        allDaysAreHolidays.push(isHoliday(date));
-      }
-
-      if (allDaysAreHolidays.every(Boolean)) {
-        longWeekends.push([
-          weekendStart.toISOString().split("T")[0],
-          weekendEnd.toISOString().split("T")[0],
-        ]);
-      }
+      longWeekends.push([
+        weekendStart.toISOString().split("T")[0],
+        weekendEnd.toISOString().split("T")[0],
+      ]);
     }
   }
 
