@@ -4,9 +4,7 @@ import { FileUploader } from "react-drag-drop-files";
 
 export const Home = ({ setData }) => {
   const fileTypes: string[] = ["CSV"];
-
   const [file, setFile] = useState<File | null>(null);
-  // const [data, setData] = useState([]);
 
   const handleChange = (file: File): void => {
     setFile(file);
@@ -32,19 +30,9 @@ export const Home = ({ setData }) => {
           return;
         }
 
-        var cleanedDate = parsedData.map((row) => row["Date"].trim());
+        const cleanedDate = parsedData.map((row) => row["Date"].trim());
         setData(cleanedDate);
       }
-      // const result = event.target.result;
-      // const csv = Papa.parse(result, {
-      //   header: true,
-      // });
-      // const rows = Object.keys(parsedData[0]);
-      // const columns = Object.values(parsedData[0]);
-      // const res = rows.reduce<[string[], string[]][]>((acc, key, index) => {
-      //   return [...acc, [[key], [columns[index]]]];
-      // }, []);
-      // setData(res);
     };
 
     reader.readAsText(file);

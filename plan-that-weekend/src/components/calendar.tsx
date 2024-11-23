@@ -1,25 +1,16 @@
-import React, { useState } from "react";
 import { DateCalendar } from "@mui/x-date-pickers";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
-import { isWithinInterval, isSameDay } from "date-fns";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const HighlightedDateCalendar = ({ longweekends }) => {
-  let longWeekends = [];
+  const longWeekends = [];
   longweekends.forEach((e) => {
     if (e.length > 2) {
       longWeekends.push({ start: dayjs(e[0]), end: dayjs(e[e.length - 1]) });
     }
   });
-  console.log("login", longWeekends);
-  // Define a date range
-  // const longWeekends = [
-  //   { start: dayjs("2024-01-12"), end: dayjs("2024-01-14") }, // Jan 12-14, 2024
-  //   { start: dayjs("2024-02-16"), end: dayjs("2024-02-18") }, // Feb 16-18, 2024
-  //   { start: dayjs("2024-03-29"), end: dayjs("2024-03-31") }, // Mar 29-31, 2024
-  // ];
 
   // Highlight logic using custom day slot props
   const getDayStyles = (day) => {
@@ -52,7 +43,7 @@ const HighlightedDateCalendar = ({ longweekends }) => {
       <Box sx={{ padding: 3, textAlign: "center" }}>
         <DateCalendar
           slots={{
-            day: ({ day, selected, onDaySelect, outsideCurrentMonth }) => {
+            day: ({ day, onDaySelect, outsideCurrentMonth }) => {
               const dayStyles = getDayStyles(day);
 
               return (
