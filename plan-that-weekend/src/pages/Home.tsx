@@ -1,0 +1,67 @@
+import { useState } from "react";
+import Papa from "papaparse";
+import { FileUploader } from "react-drag-drop-files";
+
+export const Home = () => {
+  const fileTypes: string[] = ["CSV"];
+
+  const [file, setFile] = useState<File | null>(null);
+  const [data, setData] = useState([]);
+
+  const handleChange = (file: File): void => {
+    setFile(file);
+  };
+
+  const handleParse = (): void => {
+    if (!file) return alert("Enter a valid file");
+    const reader = new FileReader();
+
+    reader.onload = async (event: ProgressEvent<FileReader>) => {
+      if (!event.target?.result) return;
+      if (event.target && typeof event.target.result === "string") {
+        const result = event.target.result;
+        console.log("login target", result);
+
+        const csv = Papa.parse(result, {
+          header: true,
+          skipEmptyLines: true, // To avoid empty rows
+        });
+
+        const parsedData = csv?.data ?? [];
+        if (parsedData.length === 0) {
+          alert("No data found in the CSV file");
+          return;
+        }
+        setData(parsedData);
+      }
+      // const result = event.target.result;
+      // const csv = Papa.parse(result, {
+      //   header: true,
+      // });
+      // const rows = Object.keys(parsedData[0]);
+      // const columns = Object.values(parsedData[0]);
+      // const res = rows.reduce<[string[], string[]][]>((acc, key, index) => {
+      //   return [...acc, [[key], [columns[index]]]];
+      // }, []);
+      // setData(res);
+    };
+
+    reader.readAsText(file);
+  };
+
+  return (
+    <div>
+      <h1>Plan that weekend</h1>
+      <FileUploader
+        multiple={false}
+        handleChange={handleChange}
+        name="file"
+        types={fileTypes}
+      />
+      <p>{file ? `File name: ${file.name}` : "no files uploaded yet"}</p>
+      <div>
+        <button onClick={handleParse}>Parse</button>
+      </div>
+    </div>
+  );
+};
