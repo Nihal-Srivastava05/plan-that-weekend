@@ -1,7 +1,12 @@
+import React from "react";
 import StaticCalendar from "../components/calendar.js";
-import findLongWeekends from "../scripts/longWeekendFinder";
+import findLongWeekends from "../scripts/longWeekendFinder.ts";
 
-export const LongWeekends = ({ data }) => {
+interface LongWeekendsProps {
+  data: string[];
+}
+
+export const LongWeekends: React.FC<LongWeekendsProps> = ({ data }) => {
   const longWeekends = findLongWeekends(data, 2024);
 
   return (

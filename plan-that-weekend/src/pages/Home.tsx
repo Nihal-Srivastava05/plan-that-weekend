@@ -1,8 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Papa from "papaparse";
 import { FileUploader } from "react-drag-drop-files";
 
-export const Home = ({ setData }) => {
+interface HomeProps {
+  setData: (data: string[]) => void;
+}
+
+type CsvRow = {
+  Date: string; // Define the structure of the CSV rows
+};
+
+export const Home: React.FC<HomeProps> = ({ setData }) => {
   const fileTypes: string[] = ["CSV"];
   const [file, setFile] = useState<File | null>(null);
 
@@ -19,7 +27,7 @@ export const Home = ({ setData }) => {
       if (event.target && typeof event.target.result === "string") {
         const result = event.target.result;
 
-        const csv = Papa.parse(result, {
+        const csv = Papa.parse<CsvRow>(result, {
           header: true,
           skipEmptyLines: true, // To avoid empty rows
         });

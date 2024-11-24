@@ -1,18 +1,28 @@
+import React from "react";
 import { DateCalendar } from "@mui/x-date-pickers";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import isBetween from "dayjs/plugin/isBetween";
 
-const HighlightedDateCalendar = ({ longweekends }) => {
+dayjs.extend(isBetween);
+
+interface HighlightedDateCalendarProps {
+  longweekends: string[][];
+}
+
+const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
+  longweekends,
+}) => {
   const longWeekends: { start: dayjs.Dayjs; end: dayjs.Dayjs }[] = [];
-  longweekends.forEach((e: string | any[]) => {
+  longweekends.forEach((e: string[]) => {
     if (e.length > 2) {
       longWeekends.push({ start: dayjs(e[0]), end: dayjs(e[e.length - 1]) });
     }
   });
 
-  const getDayStyles = (day) => {
+  const getDayStyles = (day: dayjs.Dayjs) => {
     const range = longWeekends.find(({ start, end }) =>
       day.isBetween(start, end, "day", "[]")
     );

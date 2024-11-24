@@ -4,7 +4,7 @@ import { Home } from "./pages/Home";
 import { LongWeekends } from "./pages/LongWeekends";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<string[]>([]);
   return (
     <>
       <Home setData={setData}></Home>
