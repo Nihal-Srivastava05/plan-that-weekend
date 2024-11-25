@@ -1,5 +1,6 @@
 import React from "react";
-import { DateCalendar } from "@mui/x-date-pickers";
+// import { DateCalendar } from "@mui/x-date-pickers";
+import StyledDateCalendar from "./StyledCalendar";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -32,7 +33,7 @@ const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
       const isEnd = day.isSame(range.end, "day");
 
       return {
-        backgroundColor: "#fdd835", // Highlighted background
+        backgroundColor: "#9e9e9e", // Highlighted background
         color: "black",
         ...(isStart && {
           borderTopLeftRadius: "50%",
@@ -50,8 +51,9 @@ const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ padding: 3, textAlign: "center" }}>
-        <DateCalendar
+        <StyledDateCalendar
           className="w-full"
+          views={["year", "month", "day"]}
           slots={{
             day: ({ day, onDaySelect, outsideCurrentMonth }) => {
               const dayStyles = getDayStyles(day);

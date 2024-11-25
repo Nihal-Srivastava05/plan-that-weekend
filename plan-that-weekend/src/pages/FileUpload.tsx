@@ -10,7 +10,7 @@ type CsvRow = {
   Date: string; // Define the structure of the CSV rows
 };
 
-export const Home: React.FC<HomeProps> = ({ setData }) => {
+export const FileUpload: React.FC<HomeProps> = ({ setData }) => {
   const fileTypes: string[] = ["CSV"];
   const [file, setFile] = useState<File | null>(null);
 
@@ -48,7 +48,6 @@ export const Home: React.FC<HomeProps> = ({ setData }) => {
 
   return (
     <div>
-      <h1>Plan that weekend</h1>
       <FileUploader
         multiple={false}
         handleChange={handleChange}
