@@ -1,16 +1,19 @@
 import "./App.css";
 import { useState } from "react";
-// import { FileUpload } from "./components/FileUpload";
+import Topbar from "./components/Topbar";
 import { Sidebar } from "./components/Sidebar";
 import { LongWeekends } from "./pages/LongWeekends";
 
 function App() {
   const [data, setData] = useState<string[]>([]);
   return (
-    <div className="flex">
-      <Sidebar setData={setData} />
-      <LongWeekends data={data}></LongWeekends>
-    </div>
+    <>
+      <Topbar></Topbar>
+      <div className="flex">
+        <Sidebar setData={setData} />
+        <LongWeekends data={data}></LongWeekends>
+      </div>
+    </>
   );
 }
 

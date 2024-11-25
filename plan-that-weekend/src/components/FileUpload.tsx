@@ -47,7 +47,7 @@ export const FileUpload: React.FC<HomeProps> = ({ setData }) => {
   };
 
   return (
-    <div>
+    <div className="px-2 py-5">
       <FileUploader
         multiple={false}
         handleChange={handleChange}
