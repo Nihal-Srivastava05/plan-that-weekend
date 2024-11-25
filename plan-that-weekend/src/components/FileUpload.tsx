@@ -53,10 +53,18 @@ export const FileUpload: React.FC<HomeProps> = ({ setData }) => {
         handleChange={handleChange}
         name="file"
         types={fileTypes}
+        classes="border-black"
       />
-      <p>{file ? `File name: ${file.name}` : "no files uploaded yet"}</p>
-      <div>
-        <button onClick={handleParse}>Parse</button>
+      <div className="flex mt-5 justify-center">
+        <p className="py-1">
+          {file ? `File name: ${file.name}` : "no files uploaded yet"}
+        </p>
+        <button
+          onClick={handleParse}
+          className="bg-black text-white px-4 py-1 mx-4 rounded-md"
+        >
+          Parse
+        </button>
       </div>
     </div>
   );

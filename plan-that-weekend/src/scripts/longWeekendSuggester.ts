@@ -11,7 +11,7 @@ import {
 /**
  * Get all Saturdays and Sundays for a given year
  */
-function getWeekendDates(year) {
+function getWeekendDates(year: number) {
   const start = startOfYear(new Date(year, 0, 1));
   const end = endOfYear(new Date(year, 11, 31));
   const allDays = eachDayOfInterval({ start, end });
@@ -25,7 +25,7 @@ function getWeekendDates(year) {
  * Find the Longest Non-Overlapping Subsequence (LCS-like logic)
  * Also suggest additional holidays for maximizing vacations
  */
-function findLongWeekendSuggester(holidayList, year) {
+function findLongWeekendSuggester(holidayList: string[], year: number) {
   const weekends = getWeekendDates(year);
   const allHolidays = Array.from(new Set([...holidayList, ...weekends])).sort(); // Merge and sort dates
 
@@ -77,7 +77,7 @@ function findLongWeekendSuggester(holidayList, year) {
         const benefit = afterStreak - beforeStreak;
 
         suggestedHolidays.push({
-          date: [potentialHoliday, potentialHoliday_2],
+          date: [potentialHoliday_1, potentialHoliday_2],
           benefit,
         });
       }

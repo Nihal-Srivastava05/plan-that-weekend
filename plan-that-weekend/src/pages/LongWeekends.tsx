@@ -1,7 +1,7 @@
 import React from "react";
 import StaticCalendar from "../components/calendar.js";
 import findLongWeekends from "../scripts/longWeekendFinder.ts";
-import findLongWeekendSuggester from "../scripts/longWeekendSuggester.js";
+import findLongWeekendSuggester from "../scripts/longWeekendSuggester.ts";
 
 interface LongWeekendsProps {
   data: string[];
