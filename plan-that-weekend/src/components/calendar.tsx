@@ -51,6 +51,7 @@ const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ padding: 3, textAlign: "center" }}>
         <DateCalendar
+          className="w-full"
           slots={{
             day: ({ day, onDaySelect, outsideCurrentMonth }) => {
               const dayStyles = getDayStyles(day);

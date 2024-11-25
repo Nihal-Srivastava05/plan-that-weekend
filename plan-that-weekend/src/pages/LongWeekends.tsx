@@ -10,9 +10,8 @@ export const LongWeekends: React.FC<LongWeekendsProps> = ({ data }) => {
   const longWeekends = findLongWeekends(data, 2024);
 
   return (
-    <>
-      <h1>LongWeekends</h1>
+    <div className="w-full">
       {longWeekends && <StaticCalendar longweekends={longWeekends} />}
-    </>
+    </div>
   );
 };

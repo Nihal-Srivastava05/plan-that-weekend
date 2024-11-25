@@ -6,10 +6,10 @@ import { LongWeekends } from "./pages/LongWeekends";
 function App() {
   const [data, setData] = useState<string[]>([]);
   return (
-    <>
+    <div className="flex">
       <Home setData={setData}></Home>
       <LongWeekends data={data}></LongWeekends>
-    </>
+    </div>
   );
 }
 
