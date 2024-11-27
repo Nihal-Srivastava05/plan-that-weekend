@@ -54,13 +54,15 @@ const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ padding: 3, textAlign: "center" }}>
+      <Box sx={{ padding: 3, textAlign: "center", maxHeight: "25vh" }}>
         <StyledDateCalendar
           className="w-full"
           views={["year", "month", "day"]}
           referenceDate={dayjs(referenceDate)}
           key={referenceDate}
           slots={{
+            leftArrowIcon: () => null, // Remove the previous month button
+            rightArrowIcon: () => null, // Remove the next month button
             day: ({ day, onDaySelect, outsideCurrentMonth }) => {
               const dayStyles = getDayStyles(day);
 
