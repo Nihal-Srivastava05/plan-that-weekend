@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Papa from "papaparse";
 import { FileUploader } from "react-drag-drop-files";
 
-interface HomeProps {
+interface FileUploadProps {
   setData: (data: string[]) => void;
 }
 
@@ -10,7 +10,7 @@ type CsvRow = {
   Date: string; // Define the structure of the CSV rows
 };
 
-export const FileUpload: React.FC<HomeProps> = ({ setData }) => {
+export const FileUpload: React.FC<FileUploadProps> = ({ setData }) => {
   const fileTypes: string[] = ["CSV"];
   const [file, setFile] = useState<File | null>(null);
 

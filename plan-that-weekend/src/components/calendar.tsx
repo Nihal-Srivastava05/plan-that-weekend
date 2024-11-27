@@ -1,5 +1,4 @@
 import React from "react";
-// import { DateCalendar } from "@mui/x-date-pickers";
 import StyledDateCalendar from "./StyledCalendar";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
@@ -11,10 +10,12 @@ dayjs.extend(isBetween);
 
 interface HighlightedDateCalendarProps {
   longweekends: string[][];
+  suggestedHolidays: { date: string[]; benefit: number }[];
 }
 
 const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
   longweekends,
+  suggestedHolidays,
 }) => {
   const longWeekends: { start: dayjs.Dayjs; end: dayjs.Dayjs }[] = [];
   longweekends.forEach((e: string[]) => {
@@ -45,6 +46,7 @@ const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
         }),
       };
     }
+
     return {};
   };
 

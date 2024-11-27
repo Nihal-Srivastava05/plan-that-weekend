@@ -10,7 +10,7 @@ function App() {
     <>
       <Topbar></Topbar>
       <div className="flex">
-        <Sidebar setData={setData} />
+        <Sidebar data={data} setData={setData} />
         <LongWeekends data={data}></LongWeekends>
       </div>
     </>
