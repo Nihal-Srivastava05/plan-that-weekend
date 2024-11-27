@@ -11,11 +11,13 @@ dayjs.extend(isBetween);
 interface HighlightedDateCalendarProps {
   longweekends: string[][];
   suggestedHolidays: { date: string[]; benefit: number }[];
+  referenceDate: string;
 }
 
 const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
   longweekends,
   suggestedHolidays,
+  referenceDate,
 }) => {
   const longWeekends: { start: dayjs.Dayjs; end: dayjs.Dayjs }[] = [];
   longweekends.forEach((e: string[]) => {
@@ -56,6 +58,8 @@ const HighlightedDateCalendar: React.FC<HighlightedDateCalendarProps> = ({
         <StyledDateCalendar
           className="w-full"
           views={["year", "month", "day"]}
+          referenceDate={dayjs(referenceDate)}
+          key={referenceDate}
           slots={{
             day: ({ day, onDaySelect, outsideCurrentMonth }) => {
               const dayStyles = getDayStyles(day);

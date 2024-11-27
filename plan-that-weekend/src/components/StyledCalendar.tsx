@@ -1,5 +1,5 @@
 import { DateCalendar } from "@mui/x-date-pickers";
-import { styled } from "@mui/system";
+import { height, styled } from "@mui/system";
 
 const StyledDateCalendar = styled(DateCalendar)({
   "&.MuiDateCalendar-root": {

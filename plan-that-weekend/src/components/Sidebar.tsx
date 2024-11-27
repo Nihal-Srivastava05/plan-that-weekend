@@ -23,9 +23,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ data, setData }) => {
         <FileUpload setData={setData} />
         <Divider />
         <AddHolidays setData={setData} />
-        {data.map((holiday) => {
+        {data.map((holiday, index) => {
           return (
-            <ListItem>
+            <ListItem key={index}>
               <ListItemIcon>
                 <BeachAccessIcon />
               </ListItemIcon>
