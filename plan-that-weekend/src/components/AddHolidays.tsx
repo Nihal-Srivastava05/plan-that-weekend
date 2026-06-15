@@ -1,45 +1,34 @@
-import React from "react";
-import dayjs, { Dayjs } from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useState } from "react";
+import { Button } from "./ui/Button";
+import { useHolidays } from "../hooks/useHolidays";
 
-interface AddHolidaysProps {
-  setData: (data: string[] | ((oldArray: string[]) => string[])) => void;
-}
-
-const AddHolidays: React.FC<AddHolidaysProps> = ({ setData }) => {
-  const [value, setValue] = React.useState<Dayjs | null>(dayjs());
+export default function AddHolidays() {
+  const [value, setValue] = useState<string>("");
+  const { addHoliday } = useHolidays();
 
   const addNewHoliday = () => {
-    if (value) {
-      setData((oldArray: string[]) => [
-        ...oldArray,
-        value.format("YYYY-MM-DD"),
-      ]);
+    if (!value) {
+      return;
     }
+
+    addHoliday(value);
+    setValue("");
   };
 
   return (
-    <div className="mt-5 px-2 py-5">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={["DatePicker"]}>
-          <DatePicker
-            label="Basic date picker"
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
-          />
-          <button
-            onClick={addNewHoliday}
-            className="bg-black text-white px-4 py-1 mx-4 rounded-md"
-          >
-            Add
-          </button>
-        </DemoContainer>
-      </LocalizationProvider>
+    <div className="space-y-3">
+      <input
+        type="date"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        className="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-md
+                 bg-white dark:bg-neutral-700
+                 text-neutral-900 dark:text-neutral-100
+                 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+      />
+      <Button onClick={addNewHoliday} disabled={!value} size="sm" fullWidth>
+        Add Holiday
+      </Button>
     </div>
   );
-};
-
-export default AddHolidays;
+}

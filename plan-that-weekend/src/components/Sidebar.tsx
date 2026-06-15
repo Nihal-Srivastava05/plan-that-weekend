@@ -1,39 +1,120 @@
-import React from "react";
 import { FileUpload } from "./FileUpload";
 import AddHolidays from "./AddHolidays";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-
-import ListItem from "@mui/material/ListItem";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-
-import { Divider } from "@mui/material";
+import { Card } from "./ui/Card";
+import { YearSelector } from "./shared/YearSelector";
+import { CountryPresets } from "./features/holidays/CountryPresets";
+import { useHolidays } from "../hooks/useHolidays";
 
 interface SidebarProps {
-  data: string[];
-  setData: (data: string[] | ((oldArray: string[]) => string[])) => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ data, setData }) => {
+export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
+  const { holidays, removeHoliday, clearAllHolidays } = useHolidays();
   return (
-    <Box sx={{ height: "100vh", alignContent: "center" }}>
-      <Paper elevation={3} sx={{ height: "90%" }}>
-        <FileUpload setData={setData} />
-        <Divider />
-        <AddHolidays setData={setData} />
-        {data.map((holiday, index) => {
-          return (
-            <ListItem key={index}>
-              <ListItemIcon>
-                <BeachAccessIcon />
-              </ListItemIcon>
-              <ListItemText primary={holiday} />
-            </ListItem>
-          );
-        })}
-      </Paper>
-    </Box>
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      <aside
+        className={`
+          fixed lg:static
+          top-0 left-0 bottom-0
+          w-80
+          bg-neutral-50 dark:bg-neutral-900
+          border-r border-neutral-200 dark:border-neutral-700
+          overflow-y-auto
+          z-40
+          transition-transform duration-300
+          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `.trim().replace(/\s+/g, ' ')}
+      >
+        <div className="p-4 space-y-4">
+          <div className="lg:hidden flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+              Menu
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <Card>
+            <YearSelector />
+          </Card>
+
+          <Card>
+            <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
+              Quick Load
+            </h3>
+            <CountryPresets />
+          </Card>
+
+          <Card>
+            <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
+              Import CSV
+            </h3>
+            <FileUpload />
+          </Card>
+
+          <Card>
+            <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
+              Add Holiday
+            </h3>
+            <AddHolidays />
+          </Card>
+
+          {holidays.length > 0 && (
+            <Card>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                  Your Holidays ({holidays.length})
+                </h3>
+                <button
+                  onClick={clearAllHolidays}
+                  className="text-xs text-error-600 dark:text-error-400 hover:underline"
+                >
+                  Clear All
+                </button>
+              </div>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {holidays.map((holiday, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 p-2 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors group"
+                  >
+                    <svg className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-sm text-neutral-900 dark:text-neutral-100 flex-1">
+                      {holiday}
+                    </span>
+                    <button
+                      onClick={() => removeHoliday(holiday)}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-error-100 dark:hover:bg-error-900/30 rounded"
+                      aria-label="Remove holiday"
+                    >
+                      <svg className="w-4 h-4 text-error-600 dark:text-error-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+        </div>
+      </aside>
+    </>
   );
-};
+}

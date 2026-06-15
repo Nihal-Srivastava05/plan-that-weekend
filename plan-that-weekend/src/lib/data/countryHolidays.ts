@@ -1,0 +1,145 @@
+export interface CountryHoliday {
+  date: string;
+  name: string;
+}
+
+export interface CountryHolidayData {
+  [year: number]: CountryHoliday[];
+}
+
+export const COUNTRIES = {
+  US: {
+    name: 'United States',
+    holidays: {
+      2024: [
+        { date: '2024-01-01', name: "New Year's Day" },
+        { date: '2024-01-15', name: 'Martin Luther King Jr. Day' },
+        { date: '2024-02-19', name: "Presidents' Day" },
+        { date: '2024-05-27', name: 'Memorial Day' },
+        { date: '2024-06-19', name: 'Juneteenth' },
+        { date: '2024-07-04', name: 'Independence Day' },
+        { date: '2024-09-02', name: 'Labor Day' },
+        { date: '2024-10-14', name: 'Columbus Day' },
+        { date: '2024-11-11', name: 'Veterans Day' },
+        { date: '2024-11-28', name: 'Thanksgiving' },
+        { date: '2024-12-25', name: 'Christmas Day' },
+      ],
+      2025: [
+        { date: '2025-01-01', name: "New Year's Day" },
+        { date: '2025-01-20', name: 'Martin Luther King Jr. Day' },
+        { date: '2025-02-17', name: "Presidents' Day" },
+        { date: '2025-05-26', name: 'Memorial Day' },
+        { date: '2025-06-19', name: 'Juneteenth' },
+        { date: '2025-07-04', name: 'Independence Day' },
+        { date: '2025-09-01', name: 'Labor Day' },
+        { date: '2025-10-13', name: 'Columbus Day' },
+        { date: '2025-11-11', name: 'Veterans Day' },
+        { date: '2025-11-27', name: 'Thanksgiving' },
+        { date: '2025-12-25', name: 'Christmas Day' },
+      ],
+      2026: [
+        { date: '2026-01-01', name: "New Year's Day" },
+        { date: '2026-01-19', name: 'Martin Luther King Jr. Day' },
+        { date: '2026-02-16', name: "Presidents' Day" },
+        { date: '2026-05-25', name: 'Memorial Day' },
+        { date: '2026-06-19', name: 'Juneteenth' },
+        { date: '2026-07-04', name: 'Independence Day' },
+        { date: '2026-09-07', name: 'Labor Day' },
+        { date: '2026-10-12', name: 'Columbus Day' },
+        { date: '2026-11-11', name: 'Veterans Day' },
+        { date: '2026-11-26', name: 'Thanksgiving' },
+        { date: '2026-12-25', name: 'Christmas Day' },
+      ],
+    },
+  },
+  IN: {
+    name: 'India',
+    holidays: {
+      2024: [
+        { date: '2024-01-26', name: 'Republic Day' },
+        { date: '2024-03-08', name: 'Maha Shivaratri' },
+        { date: '2024-03-25', name: 'Holi' },
+        { date: '2024-04-11', name: 'Eid ul-Fitr' },
+        { date: '2024-04-17', name: 'Ram Navami' },
+        { date: '2024-04-21', name: 'Mahavir Jayanti' },
+        { date: '2024-05-23', name: 'Buddha Purnima' },
+        { date: '2024-08-15', name: 'Independence Day' },
+        { date: '2024-08-26', name: 'Janmashtami' },
+        { date: '2024-10-02', name: 'Gandhi Jayanti' },
+        { date: '2024-10-12', name: 'Dussehra' },
+        { date: '2024-10-31', name: 'Diwali' },
+        { date: '2024-11-15', name: 'Guru Nanak Jayanti' },
+        { date: '2024-12-25', name: 'Christmas' },
+      ],
+      2025: [
+        { date: '2025-01-26', name: 'Republic Day' },
+        { date: '2025-02-26', name: 'Maha Shivaratri' },
+        { date: '2025-03-14', name: 'Holi' },
+        { date: '2025-03-31', name: 'Eid ul-Fitr' },
+        { date: '2025-04-06', name: 'Ram Navami' },
+        { date: '2025-04-10', name: 'Mahavir Jayanti' },
+        { date: '2025-05-12', name: 'Buddha Purnima' },
+        { date: '2025-08-15', name: 'Independence Day' },
+        { date: '2025-08-16', name: 'Janmashtami' },
+        { date: '2025-10-02', name: 'Gandhi Jayanti' },
+        { date: '2025-10-02', name: 'Dussehra' },
+        { date: '2025-10-20', name: 'Diwali' },
+        { date: '2025-11-05', name: 'Guru Nanak Jayanti' },
+        { date: '2025-12-25', name: 'Christmas' },
+      ],
+      2026: [
+        { date: '2026-01-26', name: 'Republic Day' },
+        { date: '2026-02-16', name: 'Maha Shivaratri' },
+        { date: '2026-03-04', name: 'Holi' },
+        { date: '2026-03-20', name: 'Eid ul-Fitr' },
+        { date: '2026-03-28', name: 'Ram Navami' },
+        { date: '2026-04-03', name: 'Mahavir Jayanti' },
+        { date: '2026-05-01', name: 'Buddha Purnima' },
+        { date: '2026-08-05', name: 'Janmashtami' },
+        { date: '2026-08-15', name: 'Independence Day' },
+        { date: '2026-10-02', name: 'Gandhi Jayanti' },
+        { date: '2026-10-21', name: 'Dussehra' },
+        { date: '2026-11-08', name: 'Diwali' },
+        { date: '2026-11-24', name: 'Guru Nanak Jayanti' },
+        { date: '2026-12-25', name: 'Christmas' },
+      ],
+    },
+  },
+  UK: {
+    name: 'United Kingdom',
+    holidays: {
+      2024: [
+        { date: '2024-01-01', name: "New Year's Day" },
+        { date: '2024-03-29', name: 'Good Friday' },
+        { date: '2024-04-01', name: 'Easter Monday' },
+        { date: '2024-05-06', name: 'Early May Bank Holiday' },
+        { date: '2024-05-27', name: 'Spring Bank Holiday' },
+        { date: '2024-08-26', name: 'Summer Bank Holiday' },
+        { date: '2024-12-25', name: 'Christmas Day' },
+        { date: '2024-12-26', name: 'Boxing Day' },
+      ],
+      2025: [
+        { date: '2025-01-01', name: "New Year's Day" },
+        { date: '2025-04-18', name: 'Good Friday' },
+        { date: '2025-04-21', name: 'Easter Monday' },
+        { date: '2025-05-05', name: 'Early May Bank Holiday' },
+        { date: '2025-05-26', name: 'Spring Bank Holiday' },
+        { date: '2025-08-25', name: 'Summer Bank Holiday' },
+        { date: '2025-12-25', name: 'Christmas Day' },
+        { date: '2025-12-26', name: 'Boxing Day' },
+      ],
+      2026: [
+        { date: '2026-01-01', name: "New Year's Day" },
+        { date: '2026-04-03', name: 'Good Friday' },
+        { date: '2026-04-06', name: 'Easter Monday' },
+        { date: '2026-05-04', name: 'Early May Bank Holiday' },
+        { date: '2026-05-25', name: 'Spring Bank Holiday' },
+        { date: '2026-08-31', name: 'Summer Bank Holiday' },
+        { date: '2026-12-25', name: 'Christmas Day' },
+        { date: '2026-12-28', name: 'Boxing Day (substitute)' },
+      ],
+    },
+  },
+} as const;
+
+export type CountryCode = keyof typeof COUNTRIES;
