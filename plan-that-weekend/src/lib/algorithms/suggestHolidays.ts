@@ -37,10 +37,14 @@ export function suggestHolidays(
   const streaks: StreakInfo[] = [];
 
   for (let i = 0; i < allDates.length; i++) {
-    const current = new Date(allDates[i]);
-    const next = i + 1 < allDates.length ? new Date(allDates[i + 1]) : null;
+    const currentDate = allDates[i];
+    if (!currentDate) continue;
 
-    currentStreak.push(allDates[i]);
+    const current = new Date(currentDate);
+    const nextDate = allDates[i + 1];
+    const next = nextDate ? new Date(nextDate) : null;
+
+    currentStreak.push(currentDate);
 
     if (!next || addDays(current, 1).getTime() !== next.getTime()) {
       if (currentStreak.length >= 2) {
@@ -63,11 +67,15 @@ export function suggestHolidays(
           let afterLength = beforeLength + gapDays;
 
           const nextStreakIndex = i + 1;
-          if (nextStreakIndex < allDates.length) {
+          if (nextStreakIndex < allDates.length && allDates[nextStreakIndex]) {
             let nextStreakLength = 1;
             for (let k = nextStreakIndex + 1; k < allDates.length; k++) {
-              const prevDate = new Date(allDates[k - 1]);
-              const currDate = new Date(allDates[k]);
+              const prevDateStr = allDates[k - 1];
+              const currDateStr = allDates[k];
+              if (!prevDateStr || !currDateStr) continue;
+
+              const prevDate = new Date(prevDateStr);
+              const currDate = new Date(currDateStr);
               if (addDays(prevDate, 1).getTime() === currDate.getTime()) {
                 nextStreakLength++;
               } else {
@@ -79,22 +87,25 @@ export function suggestHolidays(
 
           const totalDaysGained = afterLength;
           const benefitScore = totalDaysGained / gapDays;
+          const streakStart = currentStreak[0];
 
-          suggestions.push({
-            id: `sg-${suggestions.length + 1}`,
-            dates: gapDates,
-            resultingWeekend: {
-              start: currentStreak[0],
-              end: format(
-                addDays(new Date(allDates[i]), gapDays + 1),
-                "yyyy-MM-dd"
-              ),
-              days: totalDaysGained,
-            },
-            benefitScore,
-            daysOffRequired: gapDays,
-            totalDaysGained,
-          });
+          if (streakStart) {
+            suggestions.push({
+              id: `sg-${suggestions.length + 1}`,
+              dates: gapDates,
+              resultingWeekend: {
+                start: streakStart,
+                end: format(
+                  addDays(new Date(allDates[i] || ''), gapDays + 1),
+                  "yyyy-MM-dd"
+                ),
+                days: totalDaysGained,
+              },
+              benefitScore,
+              daysOffRequired: gapDays,
+              totalDaysGained,
+            });
+          }
         }
       }
 

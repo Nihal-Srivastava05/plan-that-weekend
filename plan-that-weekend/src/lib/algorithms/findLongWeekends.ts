@@ -29,17 +29,24 @@ export function findLongWeekends(
   let currentStreak: DateString[] = [];
 
   for (let i = 0; i < allDates.length; i++) {
-    const current = new Date(allDates[i]);
-    const next = i + 1 < allDates.length ? new Date(allDates[i + 1]) : null;
+    const currentDate = allDates[i];
+    if (!currentDate) continue;
 
-    currentStreak.push(allDates[i]);
+    const current = new Date(currentDate);
+    const nextDate = allDates[i + 1];
+    const next = nextDate ? new Date(nextDate) : null;
+
+    currentStreak.push(currentDate);
 
     if (!next || addDays(current, 1).getTime() !== next.getTime()) {
-      if (currentStreak.length >= 3) {
+      const streakStart = currentStreak[0];
+      const streakEnd = currentStreak[currentStreak.length - 1];
+
+      if (currentStreak.length >= 3 && streakStart && streakEnd) {
         longWeekends.push({
           id: `lw-${longWeekends.length + 1}`,
-          start: currentStreak[0],
-          end: currentStreak[currentStreak.length - 1],
+          start: streakStart,
+          end: streakEnd,
           days: currentStreak.length,
           includesHoliday: currentStreak.some((date) =>
             holidayDates.includes(date)

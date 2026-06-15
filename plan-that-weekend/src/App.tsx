@@ -7,7 +7,7 @@ import { HolidaysProvider } from "./hooks/useHolidays";
 import { ToastContainer } from "./components/ui/Toast";
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');

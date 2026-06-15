@@ -1,17 +1,63 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useHolidays } from "../hooks/useHolidays";
 import { findLongWeekends } from "../lib/algorithms/findLongWeekends";
 import { suggestHolidays } from "../lib/algorithms/suggestHolidays";
 import { rankSuggestions } from "../lib/algorithms/rankSuggestions";
 import { CalendarLegend } from "../components/features/calendar/CalendarLegend";
+import { SimpleCalendar } from "../components/features/calendar/SimpleCalendar";
+import { SuggestionStats } from "../components/features/suggestions/SuggestionStats";
+import { OnboardingModal } from "../components/shared/OnboardingModal";
 import { Card } from "../components/ui/Card";
 import { Badge } from "../components/ui/Badge";
 import { Button } from "../components/ui/Button";
-import HighlightedDateCalendar from "../components/calendar.js";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3 },
+  },
+};
 
 export function LongWeekends() {
-  const { holidays, selectedYear, maxGapDays, addHoliday } = useHolidays();
+  const { holidays, selectedYear, maxGapDays, addHoliday, importHolidays } = useHolidays();
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    const hasHolidays = holidays.length > 0;
+
+    if (!hasSeenOnboarding && !hasHolidays) {
+      setShowOnboarding(true);
+    }
+  }, [holidays.length]);
+
+  const handleCloseOnboarding = () => {
+    setShowOnboarding(false);
+    localStorage.setItem('hasSeenOnboarding', 'true');
+  };
+
+  const handleQuickStart = () => {
+    const usHolidays2024 = [
+      '2024-01-01', '2024-01-15', '2024-02-19', '2024-05-27',
+      '2024-06-19', '2024-07-04', '2024-09-02', '2024-10-14',
+      '2024-11-11', '2024-11-28', '2024-12-25'
+    ];
+    importHolidays(usHolidays2024);
+  };
 
   const longWeekends = useMemo(
     () => findLongWeekends(holidays, selectedYear),
@@ -23,18 +69,22 @@ export function LongWeekends() {
     return rankSuggestions(raw);
   }, [holidays, selectedYear, maxGapDays]);
 
-  const oldFormatLongWeekends = longWeekends.map(lw =>
-    Array.from({ length: lw.days }, (_, i) => {
-      const date = new Date(lw.start);
-      date.setDate(date.getDate() + i);
-      return date.toISOString().split('T')[0];
-    })
-  );
+  // Get all dates for calendar highlighting
+  const longWeekendDates = useMemo(() => {
+    const dates: string[] = [];
+    longWeekends.forEach(lw => {
+      for (let i = 0; i < lw.days; i++) {
+        const date = new Date(lw.start);
+        date.setDate(date.getDate() + i);
+        dates.push(date.toISOString().split('T')[0] || '');
+      }
+    });
+    return dates.filter(Boolean);
+  }, [longWeekends]);
 
-  const oldFormatSuggestions = suggestions.map(s => ({
-    date: s.dates,
-    benefit: s.benefitScore,
-  }));
+  const suggestedDates = useMemo(() => {
+    return suggestions.flatMap(s => s.dates);
+  }, [suggestions]);
 
   const nextMonth = () => {
     setCurrentMonth((curr) => (curr === 12 ? 1 : curr + 1));
@@ -48,21 +98,45 @@ export function LongWeekends() {
   const getNextMonth = () => (currentMonth === 12 ? 1 : currentMonth + 1);
 
   return (
-    <div className="w-full p-4 lg:p-6 space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-          Long Weekends for {selectedYear}
-        </h2>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {holidays.length === 0
-            ? "Add holidays to see long weekends and suggestions"
-            : `Found ${longWeekends.length} long weekends and ${suggestions.length} suggestions`}
-        </p>
-      </div>
+    <>
+      <OnboardingModal
+        isOpen={showOnboarding}
+        onClose={handleCloseOnboarding}
+        onLoadPreset={handleQuickStart}
+      />
 
-      <CalendarLegend />
+      <motion.div
+        className="w-full p-4 lg:p-6 space-y-6"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <motion.div variants={itemVariants}>
+          <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
+            Long Weekends for {selectedYear}
+          </h2>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            {holidays.length === 0
+              ? "Add holidays to see long weekends and suggestions"
+              : `Found ${longWeekends.length} long weekends and ${suggestions.length} suggestions`}
+          </p>
+        </motion.div>
 
-      <div className="space-y-4">
+        {holidays.length > 0 && (
+          <motion.div variants={itemVariants}>
+            <SuggestionStats
+              longWeekends={longWeekends}
+              suggestionCount={suggestions.length}
+              holidayCount={holidays.length}
+            />
+          </motion.div>
+        )}
+
+        <motion.div variants={itemVariants} className="hidden md:block">
+          <CalendarLegend />
+        </motion.div>
+
+      <motion.div className="space-y-4" variants={itemVariants}>
         <div className="flex items-center justify-center gap-4">
           <Button onClick={prevMonth} variant="secondary">
             <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,27 +155,34 @@ export function LongWeekends() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <HighlightedDateCalendar
-            longweekends={oldFormatLongWeekends}
-            suggestedHolidays={oldFormatSuggestions}
-            referenceDate={`${selectedYear}-${String(getPrevMonth()).padStart(2, '0')}-15`}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <SimpleCalendar
+            year={selectedYear}
+            month={getPrevMonth()}
+            holidays={holidays}
+            longWeekendDates={longWeekendDates}
+            suggestedDates={suggestedDates}
           />
-          <HighlightedDateCalendar
-            longweekends={oldFormatLongWeekends}
-            suggestedHolidays={oldFormatSuggestions}
-            referenceDate={`${selectedYear}-${String(currentMonth).padStart(2, '0')}-15`}
+          <SimpleCalendar
+            year={selectedYear}
+            month={currentMonth}
+            holidays={holidays}
+            longWeekendDates={longWeekendDates}
+            suggestedDates={suggestedDates}
           />
-          <HighlightedDateCalendar
-            longweekends={oldFormatLongWeekends}
-            suggestedHolidays={oldFormatSuggestions}
-            referenceDate={`${selectedYear}-${String(getNextMonth()).padStart(2, '0')}-15`}
+          <SimpleCalendar
+            year={selectedYear}
+            month={getNextMonth()}
+            holidays={holidays}
+            longWeekendDates={longWeekendDates}
+            suggestedDates={suggestedDates}
           />
         </div>
-      </div>
+      </motion.div>
 
       {suggestions.length > 0 && (
-        <Card>
+        <motion.div variants={itemVariants}>
+          <Card>
           <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
             Suggested Holidays
           </h3>
@@ -143,10 +224,12 @@ export function LongWeekends() {
             ))}
           </div>
         </Card>
+        </motion.div>
       )}
 
       {longWeekends.length > 0 && (
-        <Card>
+        <motion.div variants={itemVariants}>
+          <Card>
           <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
             Your Long Weekends
           </h3>
@@ -171,7 +254,9 @@ export function LongWeekends() {
             ))}
           </div>
         </Card>
+        </motion.div>
       )}
-    </div>
+      </motion.div>
+    </>
   );
 }
